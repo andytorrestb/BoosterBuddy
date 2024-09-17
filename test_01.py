@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-import Rocket
+import Rocket, FlightSimulator, Atmosphere
 
 # ==============================
 # || Vehicle Performance Data ||
@@ -14,14 +14,24 @@ rocket_params = {
   # Reference diamter for lift and drag.
   'd_ref': 1.25, # m 
 
-  # initial flight path angle.
+  # Initial flight path angle.
   'theta_i': 70 # degrees
 }
 
+# Set rocket data.
 r = Rocket.Rocket(rocket_params)
 r.set_rocket_thrust()
 
-t_vals, u_vals = r.sim_flight()
+# Set atmosphere data.
+atm = Atmosphere.Atmosphere()
+
+# Instantiate flight simulator.
+flight_sim = FlightSimulator.FlightSimulator(r, atm)
+
+t_vals, u_vals, h_vals = flight_sim.run()
 
 plt.plot(t_vals, u_vals)
-plt.savefig('test.png')
+plt.savefig('u_vs_t.png')
+plt.clf()
+plt.plot(t_vals, h_vals)
+plt.savefig('h_vs_t.png')
