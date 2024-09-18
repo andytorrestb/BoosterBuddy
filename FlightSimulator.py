@@ -10,7 +10,6 @@ class FlightSimulator:
   def set_dt(self, t_b, n_t):
     return
 
-
   def run(self):
     # Constant variables.
     F = self.rocket.F
@@ -20,12 +19,12 @@ class FlightSimulator:
     theta = 0.0
     Cd = 0.10
     rho = 1.0
-    A = 1.0
+    A = self.rocket.A
     g = 10.0
 
     # Time variables.
     t_b = 60 # sec
-    n_t = 500
+    n_t = 500 
     dt = t_b/n_t
     t_vals = np.linspace(0, t_b, n_t)
 
@@ -35,8 +34,12 @@ class FlightSimulator:
     # Altitude values.
     h_vals = [0]
 
-    # mass values
+    # Mass values.
     m_vals = [self.rocket.m_i]
+
+    rho_vals = []
+    P_vals = []
+    T_vals = []
 
     #time loop
     for t in t_vals:
@@ -47,8 +50,7 @@ class FlightSimulator:
 
       # Gather atmospheric data.
       # Get P, T, rho, for a given altitude
-
-
+      rho, P, T = self.atmosphere.get_atm_props(h_k)
 
       # Calculate rocket dynamics
       dudt = F/m - (Cd/(2*m))*rho*A*pow(u_k, 2) - g*dt
@@ -64,9 +66,10 @@ class FlightSimulator:
       h_vals.append(h)
       m_vals.append(m)
 
-    
-
+      rho_vals.append(rho)
+      P_vals.append(P)
+      T_vals.append(T)
 
     u_vals.pop()
     h_vals.pop()
-    return t_vals, u_vals, h_vals
+    return t_vals, u_vals, h_vals, rho_vals, P_vals, T_vals
