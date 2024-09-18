@@ -1,6 +1,13 @@
 import math
 import pandas as pd
 
+def interpolate(h, x2, x1, prop):
+    dxdh = (x2[prop]- x1[prop]) / (x2['h'] - x1['h'])
+
+    x = x1[prop] + (h - x1['h']) * dxdh
+
+    return x
+
 class Atmosphere:
     def __init__(self):
         return
@@ -27,14 +34,25 @@ class Atmosphere:
             # print()
             print(row['h'])
             if row['h'] > h:
-                x1 = atm.iloc[i]
-                x2 = atm.iloc[i-1]
+                x2 = atm.iloc[i]
+                x1 = atm.iloc[i-1]
                 break
         
         print(x1)
         print(x2)
 
 
+
+        # Interpolate T, rho, and P
+        props = ['T', 'rho', 'PPSL']
+
+        for prop in props:
+            print(prop, interpolate(h, x2, x1, prop))
+
+        print(x2['T'] - x1['T']) 
+
+        # for x in x2:
+        #     print(x)
 
         input()
 
