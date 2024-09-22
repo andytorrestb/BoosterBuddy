@@ -91,7 +91,7 @@ class FlightSimulator:
         # Run a 2D simulation considering both vertical and horizontal dynamics.
         self.initialize_values()
         A = self.rocket.A
-        theta_o = 70 * (math.pi / 180)  # Convert initial theta from degrees to radians
+        theta_o = self.rocket.theta_i * (math.pi / 180)  # Convert initial theta from degrees to radians
 
         # Simulate rocket physics up until the point of motor burn out.
         for t in self.t_vals:
@@ -118,8 +118,8 @@ class FlightSimulator:
             # Update aerodynamic properties.
             a_k = np.sqrt(1.4 * 287 * T)
             Ma_k = u_k / a_k
-            # CD_k = self.rocket.get_CD(Ma_k)
-            CD_k = 0
+            CD_k = self.rocket.get_CD(Ma_k)
+            # CD_k = 0
             self.CD_vals.append(CD_k)
             self.Ma_vals.append(Ma_k)
 
@@ -173,10 +173,10 @@ class FlightSimulator:
             # Update aerodynamic properties.
             a_k = np.sqrt(1.4 * 287 * T)
             Ma_k = u_k / a_k
-            # CD_k = self.rocket.get_CD(Ma_k)
-            CD_k = 0
-            # CL_k = self.rocket.get_CL(Ma_k)
-            CL_k = 0
+            CD_k = self.rocket.get_CD(Ma_k)
+            # CD_k = 0
+            CL_k = self.rocket.get_CL(Ma_k)
+            # CL_k = 0
             self.CD_vals.append(CD_k)
             self.Ma_vals.append(Ma_k)
 

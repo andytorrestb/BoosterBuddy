@@ -17,7 +17,7 @@ rocket_params = {
 
   # Initial flight path angle.
   'theta_i': 70, # degrees
-  'n_t': 100
+  'n_t': 1000
 }
 
 # Set rocket data.
