@@ -6,7 +6,7 @@ def interpolate(h, x2, x1, prop):
 
     x = x1[prop] + (h - x1['h']) * dxdh
 
-    return x
+    return float(x)
 
 class Atmosphere:
     def __init__(self):
@@ -17,7 +17,6 @@ class Atmosphere:
         atm = self.atm
 
         h_vals = atm['h']
-
         
         # for row in atm.iterrows():
         #     print(row[0])
@@ -28,38 +27,39 @@ class Atmosphere:
         
         # Find rows of data used for interpolation.
         for i in range(len(atm)):
+            # Save current row for reference.
             row  = atm.iloc[i]
-            # print(i)
-            # print(row)
-            # print()
-            print(row['h'])
+
+            # If h is found, return data for that row. 
+            if row['h'] == h:
+                return row.to_dict()
+
+            # If we pass h, save data for interpolation.
             if row['h'] > h:
                 x2 = atm.iloc[i]
                 x1 = atm.iloc[i-1]
                 break
-        
-        print(x1)
-        print(x2)
-
-
+            
+            # Rocket has left the atmopsphere.
+            if i == 15:
+                atm_sample = {
+                    'T': 1000,
+                    'rho': 0,
+                    'PPSL': 0,
+                    'h': h
+                }
+                return atm_sample
 
         # Interpolate T, rho, and P
         props = ['T', 'rho', 'PPSL']
-
+        atm_sample = {}
         for prop in props:
-            print(prop, interpolate(h, x2, x1, prop))
+            atm_sample[prop] = interpolate(h, x2, x1, prop)
 
-        print(x2['T'] - x1['T']) 
+        # Save the h value used.
+        atm_sample['h'] = h
 
-        # for x in x2:
-        #     print(x)
-
-        input()
-
-
-        # for cur_h in h_vals:
-        #     if cur_h < h:
-        #         # print('not tall enough')
+        return atm_sample
 
 
     def set_atm_props(self):
