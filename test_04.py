@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
-import Rocket, FlightSimulator, Atmosphere
+import Rocket, Atmosphere
+import FlightSimulator
 
 # ==============================
 # || Vehicle Performance Data ||
@@ -32,6 +33,7 @@ atm.set_atm_props()
 
 # Instantiate flight simulator.
 flight_sim = FlightSimulator.FlightSimulator(r, atm)
+flight_sim.set_dt()
 
 results = flight_sim.run_2D()
 
@@ -60,3 +62,7 @@ plt.savefig('Ma_vs_t.png')
 plt.clf()
 plt.plot(results['r'], results['h'])
 plt.savefig('h_vs_r.png')
+
+plt.clf()
+plt.plot(results['t'], results['theta'])
+plt.savefig('theta_vs_t.png')
